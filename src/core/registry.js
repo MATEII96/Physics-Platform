@@ -22,5 +22,9 @@ export function getSimulationById(id) {
 }
 
 export function groupByDomain() {
-    
+    return DOMAINS.map(({ name,color }) => ({
+        domain: name,
+        color,
+        items: SIMULATIONS.filter((Sim) => Sim.meta.domain === name),
+    })).filter((group) => group.items.length > 0);
 }
