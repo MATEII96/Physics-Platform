@@ -30,5 +30,25 @@ export class DoublePendulum extends Simulation {
         ];
     }
 
+    get pesets() {
+        return {
+            chaos: {
+                label: 'Edge of chaos',
+                description: 'Large symmetric release — fully chaotic motion.',
+                values: { theta1: 120, theta2: 120, L1: 1.4, L2: 1.2, m1: 1.6, m2:1.0 },
+            },
+            gentle: {
+                label: 'Small oscillations',
+                description: 'Tiny angles — near-linear, quasi-periodic normal modes.',
+                values: { theta1: 12, theta2: 6, L1: 1.4, L2: 1.4, m1: 1, m2: 1},
+            },
+            flip: {
+                label: 'Flip-over',
+                description: 'Top-heavy configuration prone to dramatic flips.',
+                values: { theta1: 90, theta2: 170, L1: 1.2, L2: 1.6, m1: 1, m2: 2.5},
+            },
+        };
+    }
+
     
 }
