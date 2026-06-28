@@ -23,6 +23,6 @@ Hosted online using GitHub Pages.
 Go to the demo link and in the left part you will see the 4 domains and choose 1 and in the middle you will see the experiment in the inferior part some statistics and in the right part the 3 menus.
 
 ## AI use:
-AI used to help me build the experiments and debug.
+AI used to help me build the experiments, learn the Theory and debug.
 
 #horizons
