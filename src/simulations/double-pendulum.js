@@ -18,7 +18,17 @@ export class DoublePendulum extends Simulation {
 
     get controls() {
         return [
-            
-        ]
+            { key: 'L1', label: 'Length L₁', min: 0.5, max: 2.5, step: 0.05, value: 1.4, unit: 'm', format: 2 },
+            { key: 'L2', label: 'Length L₂', min: 0.5, max: 2.5, step: 0.05, value: 1.4, unit: 'm', format: 2 },
+            { key: 'm1', label: 'Mass m₁', min: 0.5, max: 5, step: 0.1, value: 1.6, unit: 'kg', format: 1 },
+            { key: 'm2', label: 'Mass m₂', min: 0.5, max: 5, step: 0.1, value: 1.0, unit: 'kg', format: 1 },
+            { key: 'g', label: 'Gravity g', min: 1, max: 25, step: 0.1, value: 9.81, unit: 'm/s²', format: 2 },
+            { key: 'theta1', label: 'Initial θ₁', min: -180, max: 180, step: 1, value: 120, unit: '°', format: 0 },
+            { key: 'theta2', label: 'Initial θ₂', min: -180, max: 180, step: 1, value: 120, unit: '°', format: 0 },
+            { key: 'speed', label: 'Time scale', min: 0.1, max: 2, step: 0.1, value: 1, unit: '×', format: 1 },
+            { key: 'trail', label: 'Show trail', type: 'toggle', value: true },
+        ];
     }
+
+    
 }
