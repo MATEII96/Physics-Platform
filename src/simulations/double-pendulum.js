@@ -188,7 +188,30 @@ export class DoublePendulum extends Simulation {
                 2 * sinD * m2 * (w2 * w2 * L2 + w1 * w1 * L1 * cosD)) /
             (L1 * den);
             
-            
+        const a2 = 
+            (2 * sinD *
+                (w1 * w1 * L1 * (m1 + m2) +
+                    g * (m1 + m2) * Math.cos(th1) +
+                    w2 * w2 * L2 * m2 * cosD)) /
+            (L2 * den);
 
+        return [w1, a1, w2, a2];
     }
+
+    _energy(s) {
+        const { L1, L2, m1, m2, g } = this.params;
+        const [th1, w1, th2, w2] = s;
+        const v1sq = L1 * L1 * w1 * w1;
+        const v2sq = 
+            L1 * L1 * w1 * w1 +
+            L2 * L2 * w2 * w2 +
+            2 * L1 * L2 * w1 * w2 * Math.cos(th1 - th2);
+        const T = 0.5 * m1 * v1sq + 0.5 * m2 * v2sq;
+        const y1 = -L1 * Math.cos(th1);
+        const y2 = y1 - L2 * Math.cos(th2);
+        const V = m1 * g * y1 + m2 * g * y2;
+        return T + V;
+    }
+
+    
 }
