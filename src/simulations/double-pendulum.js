@@ -277,5 +277,27 @@ export class DoublePendulum extends Simulation {
         this._dot(ctx, x2, y2, 8 + this.params.m2 * 2, '#ff9f0a');
     }
 
-    
+    _dot(ctx, x, y, r, color) {
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.shadowColor = color;
+        ctx.shadowBlur = 18;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+    }
+
+    simple() {
+        const [th1, w1, th2, w2] = this.state;
+        return {
+            t: this.t,
+            theta1: th1,
+            theta2: th2,
+            omega1: w1,
+            omega2: w2,
+            energy: this._energy(this.state),
+        };
+    }
 }
+
+export default DoublePendulum;
