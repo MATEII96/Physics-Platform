@@ -142,7 +142,35 @@ export class DoublePendulum extends Simulation {
                     { key: 'theta2', name: 'θ₂', color: '#ff9f0a' },
                 ],
             },
-            
-        ]
+            {
+                id: 'phase',
+                title: 'Phase space (bob 2)',
+                type: 'phase',
+                xLabel: 'θ₂',
+                yLabel: 'ω₂',
+                series: [{ xKey: 'theta2', yKey: 'omega2', name:'θ₂–ω₂', color: '#5ee5ce6' }],
+            },
+            {
+                id: 'energy',
+                title: 'Total enery',
+                type: 'time',
+                xLabel: 't (s)',
+                yLabel: 'E (J)',
+                window: 12,
+                series: [{ key: 'energy', name: 'E', color: '#30d158' }],
+            },
+        ];
     }
+
+    get rebuildKeys() { return ['theta1', 'theta2']; }
+
+    reset() {
+        const { theta1, theta2 } = this.params;
+        const toRoad = Math.PI / 180;
+        this.state = [theta1 * toRoad, 0, theta2 * toRoad, 0];
+        this.t = 0;
+        this.trail.length = 0;
+        this.energy0 = this._energy(this.state);
+    }
+    
 }
