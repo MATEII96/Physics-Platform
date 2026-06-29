@@ -233,5 +233,21 @@ export class DoublePendulum extends Simulation {
             this.t += step;
         }
     }
-    
+
+    draw(ctx, view) {
+        const { width: w, height: h } = view;
+        const { L1, L2 } = this.params;
+        const [th1, , th2] = this.state;
+
+        const pivotX = w / 2;
+        const pivotY = h * 0.32;
+        const scale = (Math.min(w, h) * 0.34) / (L1 + L2);
+
+        const x1 = pivotX + scale * L1 * Math.sin(th1);
+        const y1 = pivotY + scale * L1 * Math.cos(th1);
+        const x2 = x1 + scale * L2 * Math.sin(th2);
+        const y2 = y1 + scale * L2 * Math.cos(th2);
+
+        
+    }
 }
