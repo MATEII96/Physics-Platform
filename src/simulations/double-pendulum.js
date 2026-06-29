@@ -83,11 +83,26 @@ export class DoublePendulum extends Simulation {
                         $E = T + V$ is conserved — watch the energy plot stay flat, a sign
                         the RK4 integrator is faithful.`,
                 },
-            ];
+            ],
             equations: [
                 { label: 'Total energy', text: 'E = T + V = \\text{const}' },
             ],
         };
     }
-    
+
+    get quiz() {
+        return [
+            {
+                q: 'Why is the double pendulum considered chaotic rather than merely complicated?',
+                options: [
+                    'It has many moving parts.',
+                    'Nearby initial conditions diverge exponentialyy over time.',
+                    'It loses energy unpredictably to friction.',
+                    'Its motion is random and non-deterministic.',
+                ],
+                answer: 1,
+                explain: 'Chaos is sensitive dependence on initial conditions — a positive Lyapunov exponent — even though the dynamics are fully deterministic and energy-conserving.',
+            }
+        ]
+    }
 }
