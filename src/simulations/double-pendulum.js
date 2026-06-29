@@ -248,6 +248,34 @@ export class DoublePendulum extends Simulation {
         const x2 = x1 + scale * L2 * Math.sin(th2);
         const y2 = y1 + scale * L2 * Math.cos(th2);
 
-        
+        if (this.params.trail) {
+            this.trail.push({x: x2, y: y2});
+            if (this.trail.length > 900) this.trail.shift();
+            ctx.lineWidth = 1.5;
+            for (let i = 1; i < this.trail.length; i++) {
+                const a = this.trail[i - 1];
+                const b = this.trail[i];
+                ctx.strokeStyle = `rgba(94, 92, 230, ${(i / this.trail.length) * 0.6})`;
+                ctx.beginPath();
+                ctx.moveTo(a.x, a.y);
+                ctx.lineTo(b.x, b.y);
+                ctx.stroke();
+            }
+        }
+
+        ctx.strokeStyle = 'rgba(245, 245, 247, 0.85)';
+        ctx.lineWidth = 3;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(pivotX, pivotY);
+        ctx.lineTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+
+        this._dot(ctx, pivotX, pivotY, 5, '#6e6e73');
+        this._dot(ctx, x1, y1, 8 + this.params.m1 * 2, '#0a84ff');
+        this._dot(ctx, x2, y2, 8 + this.params.m2 * 2, '#ff9f0a');
     }
+
+    
 }
