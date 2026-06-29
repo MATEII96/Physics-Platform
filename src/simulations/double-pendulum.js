@@ -50,5 +50,27 @@ export class DoublePendulum extends Simulation {
         };
     }
 
-    
+    get theory() {
+        return {
+            objectives: [
+                'Recognize the double pendulum as a low-dimenisonal chaotic system.',
+                'Connect the Lagrangian to the coupled equations of motion.',
+                'Observe enery conservation as a check on the numerical integrator.',
+                'See sensitive dependence on initial conditions in phase space.',
+            ],
+            sections: [
+                {
+                    title: 'Lagrangian',
+                    html: `The kinetic and potencial energies give the Lagrangian
+                        $$L = T - V,\\quad T = \\tfrac12 m_1 L_1^2\\dot\\theta_1^2
+                        + \\tfrac12 m_2\\big(L_1^2\\dot\\theta_1^2 + L_2^2\\dot\\theta_2^2
+                        + 2L_1L_2\\dot\\theta_1\\dot\\theta_2\\cos(\\theta_1-\\theta_2\\big),$$
+                        with $V = -(m_1+m_2)gL_1\\cos\\theta_1 - m_2 g L_2\\cos\\theta_2$.`,
+                },
+                {
+                    
+                }
+            ]
+        }
+    }
 }
