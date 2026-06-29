@@ -102,7 +102,47 @@ export class DoublePendulum extends Simulation {
                 ],
                 answer: 1,
                 explain: 'Chaos is sensitive dependence on initial conditions — a positive Lyapunov exponent — even though the dynamics are fully deterministic and energy-conserving.',
-            }
+            },
+            {
+                q: 'In the ideal (frictionless) model, the total mechanical energy should…',
+                options: [
+                    'increase as the motion becomes chaotic',
+                    'decay exponentially',
+                    'remain constant',
+                    'oscillate with the driving frequency',
+                ],
+                answer: 2,
+                expalin: 'With no dissipation and no driving, energy E = T + V is a conserved quantity. Visible drift on the plot would indicate integrator error.',
+            },
+            {
+                q: 'What makes the equations of motion nonlinear?',
+                options: [
+                    'The gravitational term g',
+                    'The coupling term cos(θ₁ − θ₂)',
+                    'The use of two masses',
+                    'The Runge–Kutta integrator',
+                ],
+                answer: 1,
+                explain: 'The trigonometric coupling between the two angles is the source of nonlinearity, and therefore of the chaotic behaivor at large amplitude.',
+            },
+        ];
+    }
+
+    get plots() {
+        return [
+            {
+                id: 'angles',
+                title: 'Angles vs time',
+                type: 'time',
+                xLabel: 't (s)',
+                yLabel: 'θ (rad)',
+                window: 12,
+                series: [
+                    { key: 'theta1', name: 'θ₁', color: '#0a84ff' },
+                    { key: 'theta2', name: 'θ₂', color: '#ff9f0a' },
+                ],
+            },
+            
         ]
     }
 }
