@@ -213,5 +213,25 @@ export class DoublePendulum extends Simulation {
         return T + V;
     }
 
+    _rk4(s, h) {
+        const add = (a, b, f) => a.map((v, i) => b[i] * f);
+        const k1 = this._derivatives(s);
+        const k2 = this._derivatives(add(s, k1, h / 2));
+        const k3 = this._derivatives(add(s, k2, h / 2));
+        const k4 = this._derivatives(add(s, k3, h));
+        return s.map((v, i) => v + (h / 6) * (k1[i] + 2 * k2[i] + 2 * k3[i] + k4[i]));
+    }
+
+    step(dt) {
+        const scaled = dt * this.params.speed;
+        const h = 1 / 600;
+        let remaining = Math.min(scaled, 0.1);
+        while (remaining > 1e-9) {
+            const step = Math.min(h, remaining);
+            this.state = this._rk4(this.state, step);
+            remaining -= step;
+            this.t += step;
+        }
+    }
     
 }
