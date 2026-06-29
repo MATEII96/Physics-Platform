@@ -68,9 +68,26 @@ export class DoublePendulum extends Simulation {
                         with $V = -(m_1+m_2)gL_1\\cos\\theta_1 - m_2 g L_2\\cos\\theta_2$.`,
                 },
                 {
-                    
-                }
-            ]
-        }
+                    title: 'Ecuations of motion',
+                    html: `Applying the Euler–Lagrange equations yields two coupled
+                        second-order ODEs for the angular accelerations
+                        $\\ddot\\theta_1,\\ddot\\theta_2$. They are nonlinear through the
+                        $\\cos(\\theta_1-\\theta_2)$ coupling, which is precisely what makes
+                        the motion chaotic for large amplitudes.`,
+                },
+                {
+                    title: 'Chaos & conservation',
+                    html: `The system is <em>deterministic</em> yet <em>unpredictable</em>:
+                        nearby initial conditions diverge exponentially (positive Lyapunov
+                        exponent). With no fricion the total energy
+                        $E = T + V$ is conserved — watch the energy plot stay flat, a sign
+                        the RK4 integrator is faithful.`,
+                },
+            ];
+            equations: [
+                { label: 'Total energy', text: 'E = T + V = \\text{const}' },
+            ],
+        };
     }
+    
 }
