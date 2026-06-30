@@ -90,7 +90,15 @@ export class KineticGas extends Simulation {
 
     get quiz() {
         return() [
-            
+            {
+                q: 'In this 2-D gas, the absolute temperature is proportional to…',
+                options: [
+                    'the number of particles',
+                    'the average kinetic energy of the particles',
+                    'the box area',
+                    'the particle radius',
+                ],
+            }
         ]
     }
 }
