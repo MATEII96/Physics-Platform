@@ -150,5 +150,24 @@ export class KineticGas extends Simulation {
 
     get rebuildKeys() { return ['count', 'radius']; }
 
-    reset
+    reset(view) {
+        if (view) this._view = view;
+        const { width, height } = this._view;
+        const N = Math.round(this.params.count);
+        const r = this.params.radius;
+        const v0 = this.params.temperature;
+        this.disks = [];
+
+        const cols = Math.ceil(Math.sqrt((N * width) / height));
+        const rows = Math.ceil(N / cols);
+        const cellW = (width - 2 * r) / cols;
+        const cellH = (height - 2 * r) / rows;
+        let placed = 0;
+        for (let row = 0; row < rows && placed < N; row++) {
+            for (let col = 0; col < cols && placed < N; col++) {
+                const angle = Math.random() * Math.PI * 2;
+                
+            }
+        }
+    }
 }
