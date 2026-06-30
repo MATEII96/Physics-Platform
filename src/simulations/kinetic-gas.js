@@ -50,7 +50,47 @@ export class KineticGas extends Simulation {
 
     get theory() {
         return {
+            objectives: [
+                'Relate temperature to the mean kineetic energy of the particles.',
+                'Recognize the Maxwell–Boltzmann speed distribution.',
+                'See how an ordered initial state thermalizes through collisions.',
+                'Connect microscopic collissions to macroscopic pressure.',
+            ],
+            sections: [
+                {
+                    title:'Temperature & eqipartition',
+                    html:`In two dimensions each particle has two translational degrees of
+                        freedom, so equipartition gives
+                        $\\langle \\tfrac12 m v^2\\rangle = k_B T$. Temperature is therefore a
+                        direct measure of the average kinetic energy — nothing more.`,
+                },
+                {
+                    title: 'Maxwell–Boltzmann distribution',
+                    html: `Even though every disk starts at the same speed, collisions
+                        redistribute energy until the speeds follow the 2-D
+                        Maxwell–Boltzmann law
+                        $$f(v) = \\frac{m v}{k_B T}\\,
+                        \\exp\\!\\Big(\\!-\\frac{m v^2}{2 k_B T}\\Big),$$
+                        which peaks at the most probable speed $v_p = \\sqrt{k_B T/m}$.`,
+                },
+                {
+                    title: 'Irreversibility from reversible laws',
+                    html: `Each collision is time-reversible, yet the distribution evolves
+                        in one direction toward equilibrium. This is the statistical arrow of
+                        time: equilibrium is overwhelmingly the most probable macrostate.`,
+                },
+            ],
+            equations: [
+                { label: 'Equipartition (2-D)', tex: '\\langle \\tfrac12 m v^2 \\rangle = k_B T' },
+                { label: 'Distribution', tex: 'f(v) = \\dfrac{mv}{k_BT} e^{-mv^2/2k_BT}' },
+                { label: 'Most probable speed', tex: 'v_p = \\sqrt{k_B T/m' },
+            ],
+        };
+    }
+
+    get quiz() {
+        return() [
             
-        }
+        ]
     }
 }
