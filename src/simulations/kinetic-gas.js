@@ -232,8 +232,44 @@ export class KineticGas extends Simulation {
                 const nx = dx / dist;
                 const ny = dy / dist;
                 // Relative velocity
-                
+                const dvx = a.vx - b.vx;
+                const dvy = a.vy - b.vy;
+                const vn = dvx * nx + dvy * ny;
+                if (vn > 0) {
+                    // approaching
+                    a.vx -= vn * nx; a.vy -= vn * ny;
+                    b.vx += vn * nx; b.vy += vn * ny;
+                }
+                // remove overlap
+                const overlap = (minDist - dist) / 2;
+                a.x -= nx * overlap; a.y -= ny * overlap;
+                b.x += nx * overlap; b.y += ny * overlap;
             }
         } 
     }
+
+    _temperature() {
+        if (this.disks.length === 0) return 0;
+        let sum = 0;
+        for (const d of this.disks) sum += 0.5 * (d.vx * d.vx + d.vy * d.vy);
+        return sum / this.disks.length;
+    }
+
+    draw(ctx, view) {
+        this._view = view;
+        const r = this.params.radius;
+        // Speed scale for coloring from blue to red
+        const ref = this.params.temperature * 1.6 || 1;
+        for (const d of this.disks) {
+            const speed = Math.hypot(d.vx, d.vy);
+            const t = Math.min(1, speed / ref);
+            const cr = Math.round(60 + 195 * t);
+            const cb = Math.round(220 - 180 * t);
+            ctx.beginPath();
+            ctx.arc(d.x, d.y, r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgb(${src}, ${Math.round(120 + 40 * (1 - t))}, ${cb})`;
+        }
+    }
+
+    
 }
