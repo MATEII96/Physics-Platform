@@ -89,7 +89,7 @@ export class KineticGas extends Simulation {
     }
 
     get quiz() {
-        return() [
+        return [
             {
                 q: 'In this 2-D gas, the absolute temperature is proportional to…',
                 options: [
@@ -98,7 +98,57 @@ export class KineticGas extends Simulation {
                     'the box area',
                     'the particle radius',
                 ],
-            }
-        ]
+                answer: 1,
+                explain: 'Equipartition in 2-D gives ⟨½mv²⟩ = k_BT, so temperature is just a rescaled mean kinetic energy.',
+            },
+            {
+                q: 'All disks start with the same speed. After many collisions the speed distribution becomes…',
+                options: [
+                    'a single sharp spike, unchanged',
+                    'uniform (all speeds equally likely)',
+                    'the Maxwell–Boltzmann distribution',
+                    'all zero',
+                ],
+                answer: 2,
+                explain: 'Collisions redistribute kinetic energy until the speeds settle into Maxwell–Boltzmann form characteristic of thermal equilibrium.',
+            },
+            {
+                q: 'Each collision is time-reversible, yet the gas evolves toward equilibrium because…',
+                options: [
+                    'energy is lost to friction',
+                    'equilibrium is by far the most probable macrostate',
+                    'the walls add energy',
+                    'momentum is not conserved',
+                ],
+                answer: 1,
+                explain: 'Microscopic reversibility coexists with a statistical arrow of time: the overwhelming majority of microstates correspond to the thermalized macrostate.',
+            },
+        ];
     }
+
+    get plots() {
+        return [
+            {
+                id: 'hist',
+                title: 'Speed distribution',
+                type: 'histogram',
+                xLabel: 'speed v',
+                yLabel: 'fraction',
+                series: [{ name: 'measured', color: '#ff9f0a' }],
+            },
+            {
+                id: 'temp',
+                title: 'Temperature',
+                type: 'time',
+                xLabel: 't (s)',
+                yLabel: 'k_BT',
+                window: 20,
+                series: [{ key: 'temperature', name: 'k_BT', color: '#ff453a' }],
+            },
+        ];
+    }
+
+    get rebuildKeys() { return ['count', 'radius']; }
+
+    reset
 }
