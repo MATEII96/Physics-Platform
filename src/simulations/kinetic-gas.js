@@ -158,6 +158,7 @@ export class KineticGas extends Simulation {
         const v0 = this.params.temperature;
         this.disks = [];
 
+        // none overlap
         const cols = Math.ceil(Math.sqrt((N * width) / height));
         const rows = Math.ceil(N / cols);
         const cellW = (width - 2 * r) / cols;
@@ -184,9 +185,55 @@ export class KineticGas extends Simulation {
     step(dt, view) {
         if (view) this._view = view;
         const scaled = Math.min(dt * this.params.speed, 0.05);
+        // collision stability
         const subs = 2;
         const h = scaled / subs;
         for (let s = 0; s < subs; s++) this._advance(h);
-        
+        this.t += scaled;
+
+        // Pressure
+        this._impulseWindow += scaled;
+        if (this._impulseWindow >= 0.5) {
+            const { width, height } = this._view;
+            const perimeter = 2 * (width + height);
+            this._pressure = this._wallImpulse / (this._impulseWindow * perimeter);
+            this._wallImpulse = 0;
+            this._impulseWindow = 0;
+        }
+    }
+
+    _advance(h) {
+        const { width, height } = this._view;
+        const r = this.params.radius;
+        const disks = this.disks;
+
+        // bouncing off walls code
+        for (const d of disks) {
+            d.x += d.vx * h;
+            d.y += d.vy * h;
+            if (d.x < r) { d.x = r; d.vx = Math.abs(d.vx); this._wallImpulse += 2 * Math.abs(d.vx); }
+            else if (d.x > width - r) { d.x = width - r; d.vx = -Math.abs(d.vx); this._wallImpulse += 2 * Math.abs(d.vx); }
+            if (d.y < r) { d.y = r; d.vy = Math.abs(d.vy); this._wallImpulse += 2 * Math.abs(d.vy); }
+            else if (d.y > height - r) { d.y = height - r; d.vy = -Math.abs(d.vy); this._wallImpulse += 2 * Math.abs(d.vy); }
+        }
+
+        // elastic collisions
+        const minDist = 2 * r;
+        const minSq = minDist * minDist;
+        for (let i = 0; i < disks.length; i++) {
+            const a = disks[i];
+            for (let j = i + 1; j < disks.length; j++) {
+                const b = disks[j];
+                const dx = b.x - a.x;
+                const dy = b.y - a.y;
+                const distSq = dx * dx + dy * dy;
+                if (distSq >= minSq || distSq === 0) continue;
+                const dist = Math.sqrt(distSq);
+                const nx = dx / dist;
+                const ny = dy / dist;
+                // Relative velocity
+                
+            }
+        } 
     }
 }
