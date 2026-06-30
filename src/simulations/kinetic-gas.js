@@ -271,5 +271,37 @@ export class KineticGas extends Simulation {
         }
     }
 
-    
+    plotData(id) {
+        if (id !== 'hist' || this.disks.length === 0) return null;
+        const speeds = this.disks.map((d) => Math.hypot(d.vx, d.vy));
+        const vMax = Math.max(...speeds, 1) * 1.05;
+        const bins = 26;
+        const binW = vMax / bins;
+        const counts = new Array(bins).fill(0);
+        for (const v of speeds) {
+            const b = Math.min(bins - 1, Math.floor(v / binW));
+            counts[b]++;
+        }
+        // Convert to fraction / unit speed
+        const N = speeds.length;
+        for (let i = 0; i < bins; i++) counts[i] = counts[i] / (N * binW);
+        const edges = [];
+        for (let i = 0; i <= bins; i++) edges.push(i * binW);
+
+        // Analytic at the measured temperature
+        const kT = this._temperature() || 1;
+        const curve = [];
+        for (let i = 0; i <= 80; i++) {
+            const v = (i / 80) * vMax;
+            const y = (v / kT) * Math.exp(-(v * v) / (2 * kT));
+            curve.push({ x:v, y });
+        }
+        return { edges, counts, curve, color: '#ff9f0a' };
+    }
+
+    sample() {
+        return { t: this.t, temperature: this._temperature(), pressure: this._pressure};
+    }
 }
+
+export default KineticGas;
