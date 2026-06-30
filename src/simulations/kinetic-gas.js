@@ -166,8 +166,27 @@ export class KineticGas extends Simulation {
         for (let row = 0; row < rows && placed < N; row++) {
             for (let col = 0; col < cols && placed < N; col++) {
                 const angle = Math.random() * Math.PI * 2;
-                
+                this.disks.push({
+                    x: r + cellW * (col + 0.5) + (Math.random() - 0.5) * cellW * 0.3,
+                    y: r + cellH * (row + 0.5) + (Math.random() - 0.5) * cellH * 0.3,
+                    vx: Math.cos(angle) * v0,
+                    vy: Math.sin(angle) * v0,
+                });
+                placed++;
             }
         }
+        this.t = 0;
+        this._wallImpulse = 0;
+        this._impulseWindow = 0;
+        this._pressure = 0;
+    }
+
+    step(dt, view) {
+        if (view) this._view = view;
+        const scaled = Math.min(dt * this.params.speed, 0.05);
+        const subs = 2;
+        const h = scaled / subs;
+        for (let s = 0; s < subs; s++) this._advance(h);
+        
     }
 }
