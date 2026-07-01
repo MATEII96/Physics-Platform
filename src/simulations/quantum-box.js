@@ -263,6 +263,54 @@ export class QuantumBox extends Simulation {
         ctx.fillStyle = grad;
         ctx.fill();
         ctx.strokeStyle = '#bf5af2';
-        
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // ⟨x⟩ marker
+        const { meanX } = this._evaluate();
+        const mx = toX(meanX);
+        ctx.strokeStyle = 'rgba(245,245,247,0.6)';
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(mx, padTop);
+        ctx.lineTo(mx, baseY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = 'rgba(245,245,247,0.85)';
+        ctx.font = '12px -apple-system, sans-serif';
+        ctx.fillText('⟨x⟩', mx + 6, padTop + 14);
+    }
+
+    _curve(ctx, xs, ys, toX, originY, scale, color, lw) {
+        ctx.beginPath();
+        for (let i = 0; i < xs.length; i++) {
+            const px = toX(xs[i]);
+            const py = originY + ys[i] * scale;
+            i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+        }
+        ctx.strokeStyle = color;
+        ctx.lineWidth = lw;
+        ctx.stroke();
+    }
+
+    plotData(id) {
+        if (id !== 'spectrum') return null;
+        const c = this._coeffs();
+        const counts = c.map((v) => v * v);
+        const edges = [];
+        const labels = [];
+        for (let n = 1; n <= N_STATES; n++) {
+            edges.push(n - 0.5);
+            labels.push(String(n));
+        }
+        edges.push(N_STATES + 0.5);
+        return { edges, counts, labels, color: '#bf5af2' };
+    }
+
+    sample() {
+        const { meanX } = this._evaluate();
+        return { t: this.t, meanX };
     }
 }
+
+export default QuantumBox;
