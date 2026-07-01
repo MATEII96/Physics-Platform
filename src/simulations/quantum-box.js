@@ -222,6 +222,7 @@ export class QuantumBox extends Simulation {
         const { re, im, prob } = this._evaluate();
         const L = this.params.L;
 
+        const padX = w * 0.1;
         
     }
 }
