@@ -223,6 +223,46 @@ export class QuantumBox extends Simulation {
         const L = this.params.L;
 
         const padX = w * 0.1;
+        const padTop = h * 0.12;
+        const baseY = h * 0.78;
+        const midY = h * 0.42;
+        const plotW = w - 2 * padX;
+        const toX = (X) => padX + (x / L) * plotW;
+
+        // infinite potential
+        ctx.strokeStyle = 'rgba(245,245,247,0.4)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(padX, padTop);
+        ctx.lineTo(padX, baseY);
+        ctx.lineTo(w - padX, baseY);
+        ctx.lineTo(w - padX, padTop);
+        ctx.stroke();
+
+        // real && imaginary parts
+        if (this.params.showParts) {
+            const sParts = (h * 0.16);
+            this._curve(ctx, this._xs, re, toX, midY, -sParts, 'rgba(100,210,255,0.7)', 1.5);
+            this._curve(ctx, this._xs, im, toX, midY, -sParts, 'rgba(255,159,10,0.7)', 1.5);
+        }
+
+        // probability  density (as a filled curve)
+        let maxP = 1e-9;
+        for (let i = 0; i < this.Nx;i++) if (prob[i] > maxP) maxP = prob[i];
+        const sProb = (baseY - padTop) * 0.9 / maxP;
+        ctx.beginPath();
+        ctx.moveTo(toX(this._xs[0]), baseY);
+        for (let i = 0; i < this.Nx; i++) {
+            ctx.lineTo(toX(this._xs[i]), baseY - prob[i] * sProb);
+        }
+        ctx.lineTo(toX(this._xs[this.Nx - 1]), baseY);
+        ctx.closePath();
+        const grad = ctx.createLinearGradient(0, padTop, 0, baseY);
+        grad.addColorStop(0, 'rgba(191,90,242,0.55)');
+        grad.addColorStop(0, 'rgba(191,90,242,0.05)');
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.strokeStyle = '#bf5af2';
         
     }
 }
