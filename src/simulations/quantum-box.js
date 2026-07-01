@@ -144,5 +144,39 @@ export class QuantumBox extends Simulation {
         ];
     }
 
+    setParam(key, value) {
+        super.setParam(key, value);
+        if (key === 'L') this._dirty = true;
+    }
+
+    reset() {
+        this.t = 0;
+        this._dirty = true;
+    }
+
+    _rebuild() {
+        const L = this.params.L;
+        const norm = Math.sqrt(2 / L);
+        for (let i = 0; i < this.Nx; i++) {
+            this._xs[i] = (i / (this.Nx - 1)) * L;
+        }
+        this._phi = [];
+        for (let n = 1; n <= N_STATES; n++) {
+            const row = new Float64Array(this.Nx);
+            for (let i = 0; i < this.Nx; i++) {
+                row[i] = norm * Math.sin((n * Math.PI * this._xs[i]) / L);
+            }
+            this._phi.push(row);
+        }
+        this._dirty = false;
+    }
+
+    _coeffs() {
+        const raw = [this.params.c1, this.params.c2, this.params.c3, this.params.c4];
+        const sumSq = raw.reduce((a, v) => a + v * v, 0) || 1;
+        const inv = 1 / Math.sqrt(sumSq);
+        return raw.map((v) => v * inv);
+    }
+
     
 }
