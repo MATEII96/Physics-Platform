@@ -110,8 +110,39 @@ export class QuantumBox extends Simulation {
                     'Energy is zero.',
                     'The well prevents any motion.',
                 ],
-                
-            }
-        ]
+                answer: 1,
+                explain: 'A pure eigenstate only acquires a global phase of unit modules, leaving |ψ|² unchanged in time. Motion appears only when states of diffrent ennergy are superposed.',
+            },
+            {
+                q: 'If you halve the width L of the well, the ground-state energy E₁…',
+                options: ['halves', 'doubles', 'quadruples', 'is unchanged'],
+                answer: 2,
+                explain: 'Since Eₙ ∝ 1/L², halving L multiplies the energy by 4 — stronger confinement costs more energy.',
+            },
+        ];
     }
+
+    get plots() {
+        return [
+            {
+                id: 'expectation',
+                title: 'Expectation (x)',
+                type: 'time',
+                xLabel: 't',
+                yLabel: '⟨x⟩',
+                window: 16,
+                series: [{ key: 'meanX', name: '⟨x⟩', color: '#bf5af2' }],
+            },
+            {
+                id: 'spectrum',
+                title: 'Energy spectrum',
+                type: 'histogram',
+                xLabel: 'state n',
+                yLabel: '|cₙ|²',
+                series: [{ name: '|cₙ|²', color: '#bf5af2' }],
+            },
+        ];
+    }
+
+    
 }
