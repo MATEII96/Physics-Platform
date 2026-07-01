@@ -178,5 +178,29 @@ export class QuantumBox extends Simulation {
         return raw.map((v) => v * inv);
     }
 
-    
+    _energy(n) {
+        const L = this.params.L;
+        return (n * n * Math.PI * Math.PI);
+    }
+
+    _evaluate() {
+        if (this._dirty) this._rebuild();
+        const c = this._coeffs();
+        const re = new Float64Array(this.Nx);
+        const im = new Float64Array(this.Nx);
+        for (let n = 0; n < N_STATES; n++) {
+            if (c[n] === 0) continue;
+            const phase = -this._energy(n + 1) * this.t;
+            const cosP = Math.cos(phase);
+            const sinP = Math.sin(phase);
+            const phi = this._phi[n];
+            const cn = c[n];
+            for (let i = 0; i < this.Nx; i++) {
+                const a = cn * phi[i];
+                re[i] += a * cosP;
+                im[i] += a * sinP;
+            }
+        }
+        
+    }
 }
