@@ -201,6 +201,27 @@ export class QuantumBox extends Simulation {
                 im[i] += a * sinP;
             }
         }
+        const prob = new Float64Array(this.Nx);
+        const dx = this.params.L / (this.Nx - 1);
+        let mean = 0;
+        let total = 0;
+        for (let i = 0; i < this.Nx; i++) {
+            prob[i] = re[i] * re[i] + im[i] * im[i];
+            mean += this._xs[i] * prob[i] * dx;
+            total += prob[i] * dx;
+        }
+        return { re, im, prob, meanX: mean / (total || 1) };
+    }
+
+    step(dt) {
+        this.t += dt * this.params.timeScale;
+    }
+
+    draw(ctx, view) {
+        const { width: w, height: h } = view;
+        const { re, im, prob } = this._evaluate();
+        const L = this.params.L;
+
         
     }
 }
