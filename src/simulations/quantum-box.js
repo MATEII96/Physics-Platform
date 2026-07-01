@@ -87,7 +87,31 @@ export class QuantumBox extends Simulation {
                         density move.`
                 },
             ],
-            
-        }
+            equations: [
+                { label: 'Energy levels', tex: 'E_n = \\dfrac{n^2\\pi^2\\hbar^2}{2mL^2}' },
+                { label: 'Evolution', tex: '\\psi(x,t)=\\sum_n c_n\\varphi_n(x)\\,e^{-iE_n t/\\hbar}' },
+            ],
+        };
+    }
+
+    get quiz() {
+        return [
+            {
+                q: 'How does the energy of the nth level depend on the quantum number n?',
+                options: ['Eₙ ∝ n', 'Eₙ ∝ n²', 'Eₙ ∝ √n', 'Eₙ ∝ 1/n'],
+                answer: 1,
+                explain: 'Eₙ = n²π²ℏ²/(2mL²): the energy grows as the square of the quantum number.',
+            },
+            {
+                q: 'Why is the probability density of a single eigenstate called "stationary"?',
+                options: [
+                    'The particle is at rest.',
+                    'Its time factor e^{−iEₙt/ℏ} has modulus 1, so |ψ|² is time-independent.',
+                    'Energy is zero.',
+                    'The well prevents any motion.',
+                ],
+                
+            }
+        ]
     }
 }
