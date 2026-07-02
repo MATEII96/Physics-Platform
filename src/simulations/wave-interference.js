@@ -51,5 +51,37 @@ export class WaveInterference extends Simulation {
         };
     }
 
-    
+    get theory() {
+        return {
+            objectives: [
+                'Explain superposition of coherent waves.',
+                'Derive the condition for constructive and destructive interference.',
+                'Relate fringe spacing to wavelength and source separation.',
+            ],
+            sections: [
+                {
+                    title: 'Superposition',
+                    html: `Each source emits a circular wave
+                        $u_i = A\\sin(k r_i - \\omega t)$ with wavenumber $k = 2\\pi/\\lambda$
+                        and regular frequency $\\omega = 2\\pi f$. The medium displacement is
+                        the sum $ = u_1 + u_2$.`,
+                },
+                {
+                    title: 'Interference condition',
+                    html : `Constructive interference occurs where the path difference is a
+                        whole number of wavelengths, $\\Delta r = m\\lambda$, and destructive
+                        where $\\Delta r = (m+\\tfrac12)\\lambda$. The time-averaged intensity
+                        is $I \\propto \\cos^2\\!\\big(\\tfrac{k\\,\\Delta r}{2}\\big)$.`,
+                }
+                {
+                    title: 'Fringe spacing',
+                    html: `In the far field at distance $D$ with source separation $d$,
+                        bright fringes fall at $y_m = \\dfrac{m\\lambda D}{d}$, so the spacing
+                        $\\Delta y = \\lambda D / d$ grows with $\\lambda$ and shrinks as the
+                        sources move apart.`,
+                },
+            ],
+            
+        }
+    }
 }
