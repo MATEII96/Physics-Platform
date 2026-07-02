@@ -81,7 +81,56 @@ export class WaveInterference extends Simulation {
                         sources move apart.`,
                 },
             ],
-            
-        }
+            equations: [
+                { label: 'Constructive', tex: '\\Delta r = m\\lambda' },
+                { label: 'Destructive', tex: '\\Delta r = (m+\\tfrac12)\\lambda' },
+                { label: 'Fringe spacing', tex: '\\Delta y = \\lambda D / d' },
+            ],
+        };
+    }
+
+    get quiz() {
+        return [
+            {
+                q: 'Two coherent sources produce a bright fringe where the path difference Δr equals…',
+                options: ['λ/2', 'an integer number of wavelengths mλ', 'πλ', 'd sinθ'],
+                answer: 1,
+                explain: 'Constructive interference (bright fringe) requires the waves to arrive in phase, i.e. Δr = mλ for integer m.',
+            },
+            {
+                q: 'If you increase the source separation d, the fringe spacing Δy = λD/d…',
+                options: ['increases', 'decreases', 'stays the same', 'becomes zero'],
+                answer: 1,
+                explain: 'Δy is inversely proportional to d, so larger separation packs the fringes closer together.',
+            },
+            {
+                q: 'Disabling the second source removes the fringes because…',
+                options: [
+                    'a single source carries no energy',
+                    'interference requires at least two coherent waves to superpose',
+                    'the wavelength changes',
+                    'the screen moves',
+                ],
+                answer: 1,
+                explain: 'Interference is the superpossition of two (or more) coherent waves. A lone source produces smooth circular wavefronts with with no stationary nodal lines.',
+            },
+        ];
+    }
+
+    get plots() {
+        return [
+            {
+                id: 'screen',
+                title: 'Screen intensity',
+                type: 'profile',
+                xLabel: 'position y',
+                yLabel: 'I (norm.)',
+                series: [{ name: 'I(y)', color: '#64d2ff' }],
+            },
+        ];
+    }
+
+    _sources(view) {
+        
     }
 }
