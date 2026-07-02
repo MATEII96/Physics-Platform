@@ -26,7 +26,30 @@ export class WaveInterference extends Simulation {
             { key: 'separation', label: 'Source gap d', min: 20, max: 320, step: 2, value: 150, unit: 'px', format: 0 },
             { key: 'frequency', label: 'Frequency f', min: 0.2, max: 3, step: 0.1, value: 1.2, unit: 'Hz', format: 1 },
             { key: 'amplitude', label: 'Amplitude A', min: 0.2, max: 1, step: 0.05, value: 0.8, unit: '', format: 2},
-            
-        ]
+            { key: 'twoSource', label: 'Second source', type: 'toggle', valu: true },
+            { key: 'showScreen', label: 'Show screen', type: 'toggle', value: true },
+        ];
     }
+
+    get presets() {
+        return {
+            classic: {
+                label: 'Young’s fringes',
+                description: 'Wide fringe spacing — a clean textbook pattern.',
+                values: { wavelength: 48, separation: 130, frequency: 1.0, twoSource: true },
+            },
+            tight: {
+                label: 'Closely spaced',
+                description: 'Large d/λ — many narrow fringes.',
+                values: { wavelength: 24, separation: 300, frequency: 1.5, twoSource: true },
+            },
+            single: {
+                label: 'Single source',
+                description: 'Disable the second source — plain circular waves, no fringes.',
+                values: { twoSource: false, waveLength: 42 },
+            },
+        };
+    }
+
+    
 }
