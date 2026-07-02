@@ -68,3 +68,7 @@ html {
     text-rendering: optimizeLegibility;
 }
 
+body {
+    font-family: var(--font-sans);
+    
+}
