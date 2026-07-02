@@ -26,7 +26,7 @@ export class WaveInterference extends Simulation {
             { key: 'separation', label: 'Source gap d', min: 20, max: 320, step: 2, value: 150, unit: 'px', format: 0 },
             { key: 'frequency', label: 'Frequency f', min: 0.2, max: 3, step: 0.1, value: 1.2, unit: 'Hz', format: 1 },
             { key: 'amplitude', label: 'Amplitude A', min: 0.2, max: 1, step: 0.05, value: 0.8, unit: '', format: 2},
-            { key: 'twoSource', label: 'Second source', type: 'toggle', valu: true },
+            { key: 'twoSource', label: 'Second source', type: 'toggle', value: true },
             { key: 'showScreen', label: 'Show screen', type: 'toggle', value: true },
         ];
     }
@@ -46,7 +46,7 @@ export class WaveInterference extends Simulation {
             single: {
                 label: 'Single source',
                 description: 'Disable the second source — plain circular waves, no fringes.',
-                values: { twoSource: false, waveLength: 42 },
+                values: { twoSource: false, wavelength: 42 },
             },
         };
     }
@@ -72,7 +72,7 @@ export class WaveInterference extends Simulation {
                         whole number of wavelengths, $\\Delta r = m\\lambda$, and destructive
                         where $\\Delta r = (m+\\tfrac12)\\lambda$. The time-averaged intensity
                         is $I \\propto \\cos^2\\!\\big(\\tfrac{k\\,\\Delta r}{2}\\big)$.`,
-                }
+                },
                 {
                     title: 'Fringe spacing',
                     html: `In the far field at distance $D$ with source separation $d$,
@@ -163,7 +163,7 @@ export class WaveInterference extends Simulation {
 
     draw(ctx, view) {
         this._ensureBuffer(view);
-        const { waveLength, frequency, amplitude } = this.params;
+        const { wavelength, frequency, amplitude } = this.params;
         const k = (2 * Math.PI) / wavelength;
         const omega = 2 * Math.PI * frequency;
         const phase = omega * this.t;
@@ -197,13 +197,64 @@ export class WaveInterference extends Simulation {
             }
         }
         this._bufCtx.putImageData(this._img, 0, 0);
-        ctx.imageSmooththingEnabled = true;
-        ctx.drawImage(this._buf, 0, 0, view.width, view, height);
+        ctx.imageSmoothingEnabled = true;
+        ctx.drawImage(this._buf, 0, 0, view.width, view.height);
 
         // source markers
         for (const s of sources) {
             ctx.beginPath();
-            
+            ctx.arc(s.x, s.y, 5, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffffff';
+            ctx.shadowColor = '#ffffff';
+            ctx.shadowBlur = 12;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+
+        // virtual screen line
+        if (this.params.showScreen) {
+            const screenX = view.width * 0.92;
+            ctx.strokeStyle = 'rgba(245,245,247,0.5)';
+            ctx.setLineDash([6, 6]);
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(screenX, 0);
+            ctx.lineTo(screenX, view.height);
+            ctx.stroke();
+            ctx.setLineDash([]);
         }
     }
+
+    plotData(id, view) {
+        if (id !== 'screen' || !view) return null;
+        const screenX = view.width * 0.92;
+        const sources = this._sources(view);
+        const k = (2 * Math.PI) / this.params.wavelength;
+        const xs = [];
+        const ys = [];
+        const N = 200;
+        let max = 1e-9;
+        for (let p = 0; p < N; p++) {
+            const y = (p / (N - 1)) * view.height;
+            let re = 0;
+            let im = 0;
+            for (const s of sources) {
+                const r = Math.hypot(screenX - s.x, y - s.y);
+                re += Math.cos(k * r);
+                im += Math.sin(k * r);
+            }
+            const intensity = re * re + im * im;
+            xs.push(y);
+            ys.push(intensity);
+            if (intensity > max) max = intensity;
+        }
+        for (let p = 0; p < N; p++) ys[p] /= max;
+        return { xs, series: [{ ys, color: '#64d2ff', name: 'I(y)' }] };
+    }
+
+    sample() {
+        return { t: this.t };
+    }
 }
+
+export default WaveInterference;
