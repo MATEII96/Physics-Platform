@@ -131,6 +131,79 @@ export class WaveInterference extends Simulation {
     }
 
     _sources(view) {
-        
+        const sx = view.width * 0.16;
+        const cy = view.height / 2;
+        const half = this.params.separation / 2;
+        const list = [{ x: sx, y: cy - half }];
+        if (this.params.twoSource) list.push({ x: sx, y: cy + half });
+        return list;
+    }
+
+    reset() {
+        this.t = 0;
+    }
+
+
+    step(dt) {
+        this.t += dt;
+    }
+
+    _ensureBuffer(view) {
+        const fw = Math.max(1, Math.ceil(view.width / this._cell));
+        const fh = Math.max(1, Math.ceil(view.height / this._cell));
+        if (this._buf && this._fw === fw && this._fh === fh) return;
+        this._fw = fw;
+        this._fh = fh;
+        this._buf = document.createElement('canvas');
+        this._buf.width = fw;
+        this._buf.height = fh;
+        this._bufCtx = this._buf.getContext('2d');
+        this._img = this._bufCtx.createImageData(fw, fh);
+    }
+
+    draw(ctx, view) {
+        this._ensureBuffer(view);
+        const { waveLength, frequency, amplitude } = this.params;
+        const k = (2 * Math.PI) / wavelength;
+        const omega = 2 * Math.PI * frequency;
+        const phase = omega * this.t;
+        const sources = this._sources(view);
+        const data = this._img.data;
+        const cell = this._cell;
+        const invMax = 1 / (amplitude * sources.length);
+
+        for (let j = 0; j < this._fh; j++) {
+            const py = j * cell;
+            for (let i = 0; i < this._fw; i++) {
+                const px = i * cell;
+                let u = 0;
+                for (const s of sources) {
+                    const r = Math.hypot(px - s.x, py - s.y);
+                    u += amplitude * Math.sin(k * r - phase);
+                }
+                const v = Math.max(-1, Math.min(1, u * invMax));
+                const idx = (j * this._fw + i) * 4;
+                const mag = Math.abs(v);
+                if (v >= 0) {
+                    data[idx] = 20 + 235 * mag;
+                    data[idx + 1] = 30 + 130 * mag;
+                    data[idx + 2] = 40;
+                } else {
+                    data[idx] = 20;
+                    data[idx + 1] = 60 + 120 * mag;
+                    data[idx + 2] = 30 + 130 * mag;
+                }
+                data[idx + 3] = 255;
+            }
+        }
+        this._bufCtx.putImageData(this._img, 0, 0);
+        ctx.imageSmooththingEnabled = true;
+        ctx.drawImage(this._buf, 0, 0, view.width, view, height);
+
+        // source markers
+        for (const s of sources) {
+            ctx.beginPath();
+            
+        }
     }
 }
