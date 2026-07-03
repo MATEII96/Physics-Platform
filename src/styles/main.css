@@ -207,4 +207,58 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
 .plot-card__canvas { flex: 1; width: 100%; min-height: 0; }
 
 /* inspector (right part) */
+.inspector {
+    grid-area: inspector;
+    display: flex; flex-direction: column;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    min-height: 0;
+}
+.inspector__tabs {
+    display: flex; gap: var(--s1);
+    padding: var(--s3) var(--s4) 0;
+    border-bottom: 1px solid var(--border);
+}
+.tab {
+    flex: 1; padding: var(--s2) var(--s3) var(--s3);
+    background: transparent; border: none; cursor: pointer;
+    color: var(--text-3); font-size: var(--text-sm); font-weight: 500;
+    border-bottom: 2px solid transparent;
+    transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.tab:hover { color: var(--text-2); }
+.tab--active { color: var(--text); border-bottom-color: var(--sim-accent); }
+
+.inspector__body { flex: 1; overflow-y: auto; padding: var(--s5); min-height: 0; }
+.inspector__lead {
+    font-size: var(--text-sm); color: var(--text-3); line-height: 1.5;
+    margin-bottom: var(--s5); padding-bottom: var(--s4); border-bottom: 1px solid var(--border);
+}
+.panel-view { display: none; }
+.panel-view--active { display: block; animation: fade var(--t-base) var(--ease); }
+@keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+.btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--s2);
+    padding: var(--s2) var(--s4); font-size: var(--text-sm); font-weight: 500; line-height: 1;
+    border: 1px solid var(--border-2); border-radius: var(--r-md);
+    background: var(--surface-2); color: var(--text); cursor: pointer;
+    transition: background var(--t-fast) var(--ease), transform var(--t-fast) var(--ease),
+        border-color var(--t-fast) var(--ease);
+    user-select: none;
+}
+.btn:hover { background: var(--surface-3); }
+.btn:active { transform: scale(0.97); }
+.btn--primary { background: var(--sim-accent); border-color: transparent; color: #fff; }
+.btn--primary:hover { filter: brightness(1.08); background: var(--sim-accent); }
+.btn--ghost { background: transparent; }
+.btn--ghost:hover { background: var(--accent-soft); border-color: var(--sim-accent); }
+
+/* select */
+.select {
+    appearance: none; -webkit-appearance: none;
+    padding: var(--s2) var(--s5) var(--s3);
+    background: var(--surface-2) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%23a1a1aa' stroke-width='1.5' fill='none' stroke-linecap='round'/></svg>") no-repeat right var(--s3) center;
+    
+}
 
