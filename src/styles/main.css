@@ -128,7 +128,7 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
 .header__spacer { flex: 1; }
 .header__note { font-size: var(--text-xs); color: var(--text-3); }
 
-/* catalog */
+/* catalog (left part) */
 .catalog {
     grid-area: catalog;
     background: var(--surface);
@@ -142,4 +142,69 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
     text-transform: uppercase; letter-spacing: 0.6rem; color: var(--text-3);
     padding: var(--s4) var(--s2) var(--s2);
 }
+.catalog__dot { width: 8px; height: 8px; border-radius: var(--r-ful); }
+.catalog__item {
+    display: flex; flex-direction: column; gap: 2px;
+    width: 100%; text-align: left; cursor: pointer;
+    padding: var(--s3); border: 1px solid transparent; border-radius: var(--r-md);
+    background: transparent; color: var(--text);
+    transition: background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+.catalog__item:hover { background: var(--surface-2); }
+.catalog__item--active { background: var(--accent-soft); border-color: var(--sim-accent); }
+.catalog__name { font-size: var(--text-sm); font-weight: 600; }
+.catalog__blurb { font-size: var(--text-xs); color: var(--text-3); line-height: 1.35; }
+
+/* stage (center part) */
+.stage {
+    grid-area: stage;
+    display: grid;
+    grid-template-rows: 1fr 218px;
+    min-width: 0;
+    background: var(--stage);
+}
+.stage__viewport { position: relative; overflow: hidden; }
+.stage__canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.hud {
+    position: absolute; top: var(--s4); left: var(--s4);
+    display: flex; align-items: center; gap: var(--s2);
+    padding: var(--s2) var(--s3);
+    font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--r-full);
+    pointer-events: none;
+}
+.hud span { color: var(--text-3); }
+.hud strong { font-weight: 500; }
+
+.toolbar {
+    position: absolute; top: var(--s4); right: var(--s4);
+    display: flex; align-items: center; gap: var(--s2);
+}
+
+/* plots strip */
+.plots {
+    display: flex; gap: var(--s3);
+    padding: var(--s3) var(--s4);
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    overflow-x: auto;
+}
+.plot-card {
+    flex: 1 1 0; min-width: 220px;
+    display: flex; flex-direction: column;
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: var(--r-md); padding: var(--s2) var(--s3) var(--s3);
+}
+.plot-card__title {
+    font-size: var(--text-xs); font-weight: 600; color: var(--text-2);
+    text-transform: uppercase; letter-spacing: 0.05em;
+    margin-bottom: var(--s1);
+}
+.plot-card__canvas { flex: 1; width: 100%; min-height: 0; }
+
+/* inspector (right part) */
 
