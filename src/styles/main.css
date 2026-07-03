@@ -70,5 +70,76 @@ html {
 
 body {
     font-family: var(--font-sans);
-    
+    font-size: var(--text-base);
+    line-height: 1.5;
+    letter-spacing: var(--tracking-tight);
+    color: var(--text);
+    background: var(--bg);
+    height: 100vh;
+    overflow: hidden;
 }
+
+h1, h2, h3, h4 { line-height: 1.2; letter-spacing: var(--tracking-tight); font-weight: 600; }
+canvas { display: block; }
+::selection { background: var(--accent-soft); }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: var(--r-full); border: 2px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: #34373f; background-clip: padding-box; }
+
+button, input, select { font-family: inherit; font-size: inherit; color: inherit; }
+
+.muted { color: var(--text-3); }
+
+.app {
+    display: grid;
+    grid-template-columns: var(--catalog-w) 1fr var(--inspector-w);
+    grid-template-rows: var(--header-h) 1fr;
+    grid-template-areas: 'header header header' 'catalog stage inspector';
+    height: 100vh;
+}
+
+/* header */
+.header {
+    grid-area: header;
+    display: flex;
+    align-items: center;
+    gap: var(--s4);
+    padding: 0 var(--s5);
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    z-index: 10;
+}
+.brand { display: flex; align-items: center; gap: var(--s3); }
+.brand__mark {
+    width: 26px; height: 26px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--sim-accent), #5e5ce6);
+    box-shadow: var(--shadow-sm);
+    transition: background var(--t-base) var(--ease);
+}
+.brand__name { font-size: var(--text-lg); font-weight: 600; }
+.header__divider { width: 1px; height: 22px; background: var(--border-2); }
+.header__exp { display: flex; align-items: baseline; gap: var(--s3); min-width: 0; }
+.header__title { font-size: var(--text-base); font-weight: 600; white-space: nowrap; }
+.header__domain {
+    font-size: var(--text-xs); color: var(--text-3);
+    text-transform: uppercase; letter-spacing: 0.06em;
+}
+.header__spacer { flex: 1; }
+.header__note { font-size: var(--text-xs); color: var(--text-3); }
+
+/* catalog */
+.catalog {
+    grid-area: catalog;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: var(--s4) var(--s3);
+}
+.catalog__group {
+    display: flex; align-items: center; gap: var(--s2);
+    font-size: var(--text-xs); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.6rem; color: var(--text-3);
+    padding: var(--s4) var(--s2) var(--s2);
+}
+
