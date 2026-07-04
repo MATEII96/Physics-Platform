@@ -47,5 +47,23 @@ export class App {
         };
     }
 
-    
+    start() {
+        this._buildCatalog();
+        this._wireTabs();
+        this._wireTransport();
+        window.addEventListener('resize', () => this._resize());
+        window.addEventListener('hashchange', () => this._routeFromHash());
+
+        this._resize();
+        this._routeFromHash();
+        requestAnimationFrame((t) => this._loop(t));
+    }
+
+    _buildCatalog() {
+        const frag = document.createDocumentFragment();
+        for (const group of groupByDomain()) {
+            const heading = document.createElement('div');
+            
+        }
+    }
 }
