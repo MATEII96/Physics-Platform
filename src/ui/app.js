@@ -63,7 +63,22 @@ export class App {
         const frag = document.createDocumentFragment();
         for (const group of groupByDomain()) {
             const heading = document.createElement('div');
-            
+            heading.className = 'catalog__group';
+            heading.innerHTML = `<span class="catalog__dot" style="background:${group.color}"></span>${group.domain}`;
+            frag.appendChild(heading);
+
+            for (const Sim of group.items) {
+                const item = document.createElement('button');
+                item.className = 'catalog__item';
+                item.dataset.id = Sim.meta.id;
+                item.innerHTML = `
+                    <span class="catalog__name">${Sim.meta.title}</span>
+                    <span class="catalog__blurb">${Sim.meta.blurb}</span>`;
+                item.addEventListener('click', () => { location.hash = `#/${Sim.meta.id}`; });
+                frag.appendChild(item);
+            }
         }
+        this.dom.catalog.innerHTML = '';
+        this.dom.catalog.appendChild(frag);
     }
 }
