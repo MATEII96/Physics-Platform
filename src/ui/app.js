@@ -134,6 +134,23 @@ export class App {
             o.textContent = presets[key].label;
             this.dom.preset.appendChild(o);
         }
-        
+        this.dom.preset.disabled = keys.length === 0;
+        this.dom.preset.onchange = () => {
+            const name = this.dom.preset.value;
+            if (!name) return;
+            this.sim.applyPreset(name);
+            this.sim.reset(this.view);
+            this.history = [];
+            this.controlsHandle.sync();
+            this._setRunning(true);
+        };
+    }
+
+    _wireTransport() {
+        this.dom.btnPlay.addEventListener('click', () => this._setRunning(!this.running));
+        this.dom.btnReset.addEventListener('click', () => {
+            if (!this.sim) return;
+            
+        })
     }
 }
