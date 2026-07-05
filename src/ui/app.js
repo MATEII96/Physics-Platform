@@ -150,7 +150,29 @@ export class App {
         this.dom.btnPlay.addEventListener('click', () => this._setRunning(!this.running));
         this.dom.btnReset.addEventListener('click', () => {
             if (!this.sim) return;
-            
-        })
+            this.sim.reset(this.view);
+            this.history = [];
+            this._setRunning(true);
+        });
     }
+
+    _setRunning(on) {
+        this.running = on;
+        this.dom.btnPlay.textContent = on ? 'Pause' : 'Play';
+        this.dom.btnPlay.classList.toggle('btn--primary', !on);
+    }
+
+    _wireTabs() {
+        for (const tab of this.dom.tabs) {
+            tab.addEventListener('click', () => {
+                const name = tab.dataset.tab;
+                for (const t of this.dom.tabs) t.classList.toggle('tab--active', t === tab);
+                for (const [key, panel] of Object.entries(this.dom.panels)) {
+                    panel.classList.toggle('panel-view--active', key === name);
+                }
+            });
+        }
+    }
+
+    
 }
