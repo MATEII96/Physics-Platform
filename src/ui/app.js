@@ -181,7 +181,44 @@ export class App {
             const card = document.createElement('div');
             card.className = 'plot-card';
             card.innerHTML = `<div class="plot-card__title">${spec.title}</div>`;
-            const canvas = document.createElement('canvas')
+            const canvas = document.createElement('canvas');
+            canvas.className = 'plot-card__canvas';
+            card.appendChild(canvas);
+            this.dom.plots.appendChild(card);
+            this.plots.push({ spec, plot: new Plot(canvas, spec) });
+        }
+    }
+
+    _renderPlots() {
+        for (const { spec, plot } of this.plots) {
+            if (spec.type === 'time' || spec.type === 'phase') {
+                plot.render({ history: this.history });
+            } else {
+                const data = this.sim.plotData ? this.sim.plotData(spec.id, this.view) : null;
+                plot.render({ data });
+            }
+        }
+    }
+
+    _resize() {
+        const dpr = window.devicePixelRatio || 1;
+        const rect = this.canvas.getBoundingClientRect();
+        this.view = { width: rect.width, height: rect.height };
+        this.canvas.width = Math.max(1, Math.round(rect.width * dpr));
+        this.canvas.height = Math.max(1, Math.round(rect.height * dpr));
+        this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        for (const { plot } of this.plots) plot.resize();
+    }
+
+    _loop(now) {
+        const dt = Math.min((now - this._last) / 1000, 0.05);
+        this._last = now;
+        if (dt > 0) this.fps += (1 / dt - this.fps) * 0.08;
+
+        if (this.sim) {
+            if (this.running) {
+                
+            }
         }
     }
 }
