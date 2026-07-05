@@ -217,8 +217,31 @@ export class App {
 
         if (this.sim) {
             if (this.running) {
-                
+                this.sim.step(dt, this.view);
+                this.history.push(this.sim.sample());
+                if (this.history.length > HISTORY_CAP) this.history.shift();
+            }
+
+            this.ctx.clearRect(0, 0, this.view.width, this.view.height);
+            this.sim.draw(this.ctx, this.view);
+
+            this.dom.hudFps.textContent = this.fps.toFixed(0);
+            this.dom.hudTime.textContent = `${this.sim.t.toFixed(1)} s`;
+
+            this._plotClock += dt;
+            if (this._plotClock >= PLOT_INTERVAL) {
+                this._plotClock = 0;
+                this._renderPlots();
             }
         }
+
+        requestAnimationFrame((t) => this._loop(t));
     }
 }
+
+export function bootstrap() {
+    const app = new App();
+    app.start();
+}
+
+export default App;
