@@ -81,4 +81,31 @@ export class App {
         this.dom.catalog.innerHTML = '';
         this.dom.catalog.appendChild(frag);
     }
+
+    _routeFromHash() {
+        const id = location.hash.replace(/^#\/?/, '');
+        const Sim = getSimulationById(id) || SIMULATIONS[0];
+        if (!this.sim || this.sim.constructor.meta.id !== Sim.meta.id) {
+            this._select(Sim);
+        }
+    }
+
+    _select(Sim) {
+        this.sim = new Sim();
+        this.sim.reset(this.view);
+        this.history = [];
+
+        const meta = Sim.meta;
+        document.documentElement.style.setProperty('--sim-accent', meta.accent || '#0a84ff');
+        document.title = `PhysiCraft — ${meta.title}`;
+        this.dom.title.textContent = meta.title;
+        this.dom.domain.textContent = meta.domain;
+        this.dom.blurb.textContent = meta.blurb;
+
+        for (const el of this.dom.catalog.querySelectorAll('.catalog__item')) {
+            el.classList.toggle('catalog__item--active', el.dataset.id === meta.id);
+        }
+
+        
+    }
 }
