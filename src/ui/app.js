@@ -106,6 +106,34 @@ export class App {
             el.classList.toggle('catalog__item--active', el.dataset.id === meta.id);
         }
 
+        this.controlsHandle = buildControls(this.dom.panels.controls, this.sim, (k, v) => this._onParam(k, v));
+        renderTheory(this.dom.panels.theory, this.sim);
+        renderQuiz(this.dom.panels.quiz, this.sim);
+        this._buildPresets();
+        this._buildPlots();
+        this._setRunning(true);
+    }
+
+    _onParam(key, value) {
+        if(!this.sim) return;
+        this.sim.setParam(key, value);
+        const rebuild = (this.sim.rebuildKeys || []).includes(key);
+        if (rebuild) {
+            this.sim.reset(this.view);
+            this.history = [];
+        }
+    }
+
+    _buildPresets() {
+        const presets = this.sim.presets;
+        const keys = Object.keys(presets);
+        this.dom.preset.innerHTML = '<option value="">Presets…</options>';
+        for (const key of keys) {
+            const o = document.createElement('option');
+            o.value = key;
+            o.textContent = presets[key].label;
+            this.dom.preset.appendChild(o);
+        }
         
     }
 }
