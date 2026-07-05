@@ -174,5 +174,14 @@ export class App {
         }
     }
 
-    
+    _buildPlots() {
+        this.dom.plots.innerHTML = '';
+        this.plots = [];
+        for (const spec of this.sim.plots) {
+            const card = document.createElement('div');
+            card.className = 'plot-card';
+            card.innerHTML = `<div class="plot-card__title">${spec.title}</div>`;
+            const canvas = document.createElement('canvas')
+        }
+    }
 }
