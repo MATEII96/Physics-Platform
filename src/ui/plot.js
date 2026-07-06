@@ -94,5 +94,32 @@ export class Plot {
         return v.toFixed(a < 1 ? 2 : a < 10 ? 1 : 0);
     }
 
-    
+    _renderTime(history) {
+        if (history.length < 2) return;
+        const now = history[history.length - 1].t;
+        const win = this.spec.window || 10;
+        const xmin = Math.max(0, now - win);
+        const visible = history.filter((s) => s.t >= xmin);
+
+        let ymin = Infinity;
+        let ymax = -Infinity;
+        for (const s of visible) {
+            for (const ser of this.spec.series) {
+                const v = s[ser.key];
+                if (v == null || Number.isNaN(v)) continue;
+                if (v < ymin) ymin = v;
+                if (v > ymax) ymax = v;
+            }
+        }
+        if (!Number.isFinite(ymin)) return;
+        const pad = (ymax - ymin) * 0.1 || 1;
+        ymin -= pad; ymax += pad;
+
+        const { toX, toY } = this._frame(xmin, now, ymin, ymax);
+        const { ctx } = this;
+        for (const ser of this.spec.series) {
+            ctx.strokeStyle = ser.color;
+            
+        }
+    }
 }
