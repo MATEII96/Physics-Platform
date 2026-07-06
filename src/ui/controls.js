@@ -69,6 +69,33 @@ export function buildControls(container, sim, onChange) {
         const badge = document.createElement('span');
         badge.className = 'control__value';
         badge.textContent = formatValue(sim.params[spec.key], spec);
-        
+        label.appendChild(name);
+        label.appendChild(badge);
+
+        const input = document.createElement('input');
+        input.type = 'range';
+        input.className = 'slider';
+        input.id = `ctl-${spec.key}`;
+        input.min = String(spec.min);
+        input.max = String(spec.max);
+        input.step = String(spec.step);
+        input.value = String(sim.params[spec.key]);
+        input.addEventListener('input', () => {
+            const v = Number(input.value);
+            badge.textContent = formatValue(v, spec);
+            onChange(spec.key, v);
+        });
+
+        row.appendChild(label);
+        row.appendChild(input);
+        syncers.push(() => {
+            input.value = String(sim.params[spec.key]);
+            badge.textContent = formatValue(sim.params[spec.key], spec);
+        });
+        container.appendChild(row);
     }
+
+    return { sync: () => syncers.forEach((fn) => fn()) };
 }
+
+export default buildControls;
