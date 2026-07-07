@@ -11,4 +11,71 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous" />
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
-    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+        onload="renderMathInElement(document.body, { delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}], throwOnError: false });"></script>
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <div class="brand">
+                <div class="brand__mark" aria-hidden="true"></div>
+                <span class="brand__name">PhysiCraft</span>
+            </div>
+            <div class="header__divider" aria-hidden="true"></div>
+            <div class="header__exp">
+                <span class="header__title" id="sim-title">—</span>
+                <span class="header__domain" id="sim-domain"></span>
+            </div>
+            <div class="header__spacer"></div>
+            <span class="header__note">Interactive Physics Lab · Vanilla JS · Canvas · CSS</span>
+        </header>
+
+        <!-- catalog -->
+        <nav class="catalog" id="catalog" aria-label="Experiment catalog"></nav>
+
+        <!-- stage -->
+        <main class="stage">
+            <div class="stage__viewport">
+                <canvas id="stage-canvas" class="stage__canvas" role="img"
+                        aria-label="Simulation viewport"></canvas>
+
+                <div class="hud">
+                    <span>FPS</span><strong id="hud-fps">—</strong>
+                    <span>·</span>
+                    <span>t</span><strong id="hud-time">0.0 s</strong>
+                </div>
+
+                <div class="toolbar">
+                    <select id="preset-select" class="select" aria-label="Presets">
+                        <option value="">Presets…</option>
+                    </select>
+                    <button id="btn-reset" class="btn btn--ghost">Reset</button>
+                    <button id="btn-play" class="btn">Pause</button>
+                </div>
+            </div>
+
+            <div class="plots" id="plots" aria-label="Live plots"></div>
+        </main>
+
+        <!-- inspector (right part) -->
+        <aside class="inspector" aria-label="Experiment inspector">
+            <div class="inspector__tabs" role="tablist">
+                <button class="tab tab--active" data-tab="controls" role="tab">Controls</button>
+                <button class="tab" data-tab="theory" role="tab">Theory</button>
+                <button class="tab" data-tab="quiz" role="tab">Quiz</button>
+            </div>
+            <div class="inspector__body">
+                <p class="inspector__lead" id="sim-blurb"></p>
+                <section id="panel-controls" class="panel-view panel-view--active" role="tabpanel"></section>
+                <section id="panel-theory" class="panel-view" role="tabpanel"></section>
+                <section id="panel-quiz" class="panel-view" role="tabpanel"></section>
+            </div>
+        </aside>
+    </div>
+
+    <script type="module">
+        import { bootstrap } from './src/ui/app.js';
+        bootstrap();
+    </script>
+</body>
+</html>
