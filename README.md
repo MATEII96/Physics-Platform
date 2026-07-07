@@ -1,6 +1,6 @@
 # ⚛️  PhysiCraft — Physics Educational Platform 
 
-## Demo:
+## Demo: https://mateii96.github.io/Physics-Platform/
 
 This platform is a website for university students to make them learn easier 4 categories of physics with 4 virtual experiments:
 - Mechanics: Double Pendulum.
