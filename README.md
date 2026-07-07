@@ -15,6 +15,13 @@ Every experiment has the principal screen with the animation and 3 menus:
 
 For the demo I implemented the 4 basic domains of physics paired with one experiment for every domain.
 
+##  📸 Galery:
+![Double Pendulum](screenshots/screenshot1.jpg)
+![Wave Interference](screenshots/screenshot2.jpg)
+![Particle in a Box](screenshots/screenshot3.jpg)
+![Kinetic Theory of Gases](screenshots/screenshot4.jpg)
+
+
 ## 🛠️ Technical Information:
 Website made mainly with JavaScript(functionality), html(web page), css(design) and KaTeX(for the Theory menu).
 Hosted online using GitHub Pages.
