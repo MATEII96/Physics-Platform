@@ -182,7 +182,76 @@ export class Plot {
         const { toX, toY } = this._frame(xs[0], xs[xs.length - 1], ymin - pad * 0.2, ymax + pad);
         const { ctx } = this;
         for (const ser of data.series) {
-            
+            ctx.strokeStyle = ser.color;
+            ctx.lineWidth = 1.8;
+            ctx.beginPath();
+            for (let i = 0; i < xs.length; i++) {
+                const p = toX(xs[i]);
+                const q = toY(ser.ys[i]);
+                i === 0 ? ctx.moveTo(p, q) : ctx.lineTo(p, q);
+            }
+            ctx.stroke();
         }
     }
+
+    _renderHistogram(data) {
+        if (!data || !data.counts || data.counts.length === 0) return;
+        const { edges, count, curve, color } = data;
+        const xmin = edges[0];
+        const xmax = edges[edges.length - 1];
+        let ymax = Math.max(...counts);
+        if (curve) for (const p of curve) if (p.y > ymax) ymax = p.y;
+        ymax = ymax * 1.15 || 1;
+
+        const { toX, toY } = this._frame(xmin, xmax, 0, ymax);
+        const { ctx } = this;
+        ctx.fillStyle = this._fade(color, 0.55);
+        for (let i = 0; i < counts.length; i++) {
+            const x0 = toX(edges[i]);
+            const x1 = toX(edges[i + 1]);
+            const y0 = toY(0);
+            const y1 = toY(counts[i]);
+            ctx.fillRect(x0 + 0.5, y1, Math.max(1, x1 - x0 - 1), y0 - y1);
+        }
+        if (curve && curve.length > 1) {
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 1.8;
+            ctx.beginPath();
+            for (let i = 0; i < curve.length; i++) {
+                const px = toX(curve[i].x);
+                const py = toY(curve[i].y);
+                i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+            }
+            ctx.stroke();
+        }
+    }
+
+    _legend() {
+        const { ctx } = this;
+        const r = this._rect();
+        ctx.font = STYLE.font;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        let x = r.x0 + 6;
+        const y = r.y0 + 8;
+        for (const ser of this.spec.series) {
+            if (!ser.name) continue;
+            ctx.fillStyle = ser.color;
+            ctx.fillRect(x, y - 3, 10, 3);
+            ctx.fillStyle = STYLE.label;
+            ctx.fillText(ser.name, x + 14, y);
+            x += 14 + ctx.measureText(ser.name).width + 16;
+        }
+    }
+
+    _fade(color, alpha) {
+        if (color[0] !== '#') return color;
+        const n = parseInt(color.slice(1), 16);
+        const r = (n >> 16) & 255;
+        const g = (n >> 8) & 255;
+        const b = n & 255;
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
 }
+
+export default Plot;
