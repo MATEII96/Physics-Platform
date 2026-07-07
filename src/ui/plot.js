@@ -119,6 +119,69 @@ export class Plot {
         const { ctx } = this;
         for (const ser of this.spec.series) {
             ctx.strokeStyle = ser.color;
+            ctx.lineWidth = 1.6;
+            ctx.beginPath();
+            let started = false;
+            for (const s of visible) {
+                const v = s[ser.key];
+                if (v == null || Number.isNaN(v)) continue;
+                const px = toX(s.t);
+                const py = toY(v);
+                started ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+                started = true;
+            }
+            ctx.stroke();
+        }
+        this._legend();
+    }
+
+    _renderPhase(history) {
+        if (history.length < 2) return;
+        const ser = this.spec.series[0];
+        let xmin = Infinity, xmax = -Infinity, ymin = Infinity, ymax = -Infinity;
+        for (const s of history) {
+            const x = s[ser.xKey];
+            const y = s[ser.yKey];
+            if (x < xmin) xmin = x; if (x > xmax) xmax = x;
+            if (y < ymin) ymin = y; if (y > ymax) ymax = y;
+        }
+        const px = (xmax - xmin) * 0.1 || 1;
+        const py = (ymax - ymin) * 0.1 || 1;
+        const { toX, toY } = this._frame(xmin - px, xmax + px, ymin - py, xmax + py);
+        const { ctx } = this;
+        ctx.lineWidth = 1.2;
+        const n = history.length;
+        for (let i = 1; i < n; i++) {
+            const a = history[i - 1];
+            const b = history[i];
+            ctx.strokeStyle = this._fade(ser.color, (i / n) * 0.9 + 0.1);
+            ctx.beginPath();
+            ctx.moveTo(toX(a[ser.xKey]), toY(a[ser.yKey]));
+            ctx.moveTo(toX(b[ser.xKey]), toY(b[ser.yKey]));
+            ctx.stroke();
+        }
+        // current point
+        const last = history[n - 1];
+        ctx.fillStyle = ser.color;
+        ctx.beginPath();
+        ctx.arc(toX(last[ser.xKey]), toY(last[ser.yKey]), 3, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    _renderProfile(data) {
+        if (!data || !data.xs || data.xs.length < 2) return;
+        const xs = data.xs;
+        let ymin = Infinity, ymax = -Infinity;
+        for (const ser of data.series) {
+            for (const y of ser.ys) {
+                if (y < ymin) ymin = y;
+                if (y > ymax) ymax = y;
+            }
+        }
+        const pad = (ymax - ymin) * 0.08 || 1;
+        const { toX, toY } = this._frame(xs[0], xs[xs.length - 1], ymin - pad * 0.2, ymax + pad);
+        const { ctx } = this;
+        for (const ser of data.series) {
             
         }
     }
