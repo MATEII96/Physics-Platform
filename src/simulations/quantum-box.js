@@ -42,7 +42,7 @@ export class QuantumBox extends Simulation {
             },
             sloshing: {
                 label: 'Two-state beat',
-                desccription: 'Equal mix of n=1 and n=2 — the density sloshes side to side.',
+                description: 'Equal mix of n=1 and n=2 — the density sloshes side to side.',
                 values: { c1: 1, c2: 1, c3: 0, c4: 0 },
             },
             packet: {
@@ -227,7 +227,7 @@ export class QuantumBox extends Simulation {
         const baseY = h * 0.78;
         const midY = h * 0.42;
         const plotW = w - 2 * padX;
-        const toX = (X) => padX + (x / L) * plotW;
+        const toX = (x) => padX + (x / L) * plotW;
 
         // infinite potential
         ctx.strokeStyle = 'rgba(245,245,247,0.4)';
@@ -259,7 +259,7 @@ export class QuantumBox extends Simulation {
         ctx.closePath();
         const grad = ctx.createLinearGradient(0, padTop, 0, baseY);
         grad.addColorStop(0, 'rgba(191,90,242,0.55)');
-        grad.addColorStop(0, 'rgba(191,90,242,0.05)');
+        grad.addColorStop(1, 'rgba(191,90,242,0.05)');
         ctx.fillStyle = grad;
         ctx.fill();
         ctx.strokeStyle = '#bf5af2';

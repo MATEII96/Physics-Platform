@@ -28,7 +28,7 @@ export function buildControls(container, sim, onChange) {
             const text = document.createElement('span');
             text.textContent = spec.label;
             const sw = document.createElement('input');
-            sw.type = 'chechbox';
+            sw.type = 'checkbox';
             sw.className = 'switch';
             sw.checked = Boolean(sim.params[spec.key]);
             sw.addEventListener('change', () => onChange(spec.key, sw.checked));

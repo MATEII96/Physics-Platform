@@ -1,4 +1,4 @@
-import { Simulation } from '../core/simulator.js';
+import { Simulation } from '../core/simulation.js';
 
 export class KineticGas extends Simulation {
     static meta = {
@@ -10,7 +10,7 @@ export class KineticGas extends Simulation {
         accent: '#ff9f0a',
     };
 
-    contructor() {
+    constructor() {
         super();
         this.disks = [];
         this._view = { width: 800, height: 600 };
@@ -83,7 +83,7 @@ export class KineticGas extends Simulation {
             equations: [
                 { label: 'Equipartition (2-D)', tex: '\\langle \\tfrac12 m v^2 \\rangle = k_B T' },
                 { label: 'Distribution', tex: 'f(v) = \\dfrac{mv}{k_BT} e^{-mv^2/2k_BT}' },
-                { label: 'Most probable speed', tex: 'v_p = \\sqrt{k_B T/m' },
+                { label: 'Most probable speed', tex: 'v_p = \\sqrt{k_B T/m}' },
             ],
         };
     }
@@ -267,7 +267,8 @@ export class KineticGas extends Simulation {
             const cb = Math.round(220 - 180 * t);
             ctx.beginPath();
             ctx.arc(d.x, d.y, r, 0, Math.PI * 2);
-            ctx.fillStyle = `rgb(${src}, ${Math.round(120 + 40 * (1 - t))}, ${cb})`;
+            ctx.fillStyle = `rgb(${cr}, ${Math.round(120 + 40 * (1 - t))}, ${cb})`;
+            ctx.fill();
         }
     }
 

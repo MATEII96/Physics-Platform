@@ -26,7 +26,7 @@ export class Plot {
 
     render({ history = [], data = null } = {}) {
         const { ctx } = this;
-        ctx.clearRect(0, 0, this.w, this,h);
+        ctx.clearRect(0, 0, this.w, this.h);
         switch (this.spec.type) {
             case 'phase': this._renderPhase(history); break;
             case 'profile': this._renderProfile(data); break;
@@ -51,7 +51,7 @@ export class Plot {
     _frame(xmin, xmax, ymin, ymax) {
         const { ctx } = this;
         const r = this._rect();
-        const dx = ymax - xmin || 1;
+        const dx = xmax - xmin || 1;
         const dy = ymax - ymin || 1;
         const toX = (x) => r.x0 + ((x - xmin) / dx) * r.w;
         const toY = (y) => r.y1 - ((y - ymin) / dy) * r.h;
@@ -65,7 +65,7 @@ export class Plot {
         ctx.textBaseline = 'middle';
         const ticks = 4;
         for (let i = 0; i <= ticks; i++) {
-            const yy = ymin + (dy * 1) / ticks;
+            const yy = ymin + (dy * i) / ticks;
             const py = toY(yy);
             ctx.beginPath();
             ctx.moveTo(r.x0, py);
@@ -147,7 +147,7 @@ export class Plot {
         }
         const px = (xmax - xmin) * 0.1 || 1;
         const py = (ymax - ymin) * 0.1 || 1;
-        const { toX, toY } = this._frame(xmin - px, xmax + px, ymin - py, xmax + py);
+        const { toX, toY } = this._frame(xmin - px, xmax + px, ymin - py, ymax + py);
         const { ctx } = this;
         ctx.lineWidth = 1.2;
         const n = history.length;
@@ -157,7 +157,7 @@ export class Plot {
             ctx.strokeStyle = this._fade(ser.color, (i / n) * 0.9 + 0.1);
             ctx.beginPath();
             ctx.moveTo(toX(a[ser.xKey]), toY(a[ser.yKey]));
-            ctx.moveTo(toX(b[ser.xKey]), toY(b[ser.yKey]));
+            ctx.lineTo(toX(b[ser.xKey]), toY(b[ser.yKey]));
             ctx.stroke();
         }
         // current point
@@ -196,7 +196,7 @@ export class Plot {
 
     _renderHistogram(data) {
         if (!data || !data.counts || data.counts.length === 0) return;
-        const { edges, count, curve, color } = data;
+        const { edges, counts, curve, color } = data;
         const xmin = edges[0];
         const xmax = edges[edges.length - 1];
         let ymax = Math.max(...counts);

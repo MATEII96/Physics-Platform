@@ -1,4 +1,4 @@
-# Physics Educational Platform
+# ⚛️  PhysiCraft — Physics Educational Platform 
 
 ## Demo:
 

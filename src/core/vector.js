@@ -1,6 +1,7 @@
 export class Vector2 {
     constructor(x = 0, y = 0){
-
+        this.x = x;
+        this.y = y;
     }
     set(x, y) { this.x = x; this.y = y; return this; }
     copy(v) { this.x = v.x; this.y = v.y; return this; }
@@ -8,7 +9,7 @@ export class Vector2 {
     addScaled(v, s) { this.x += v.x * s; this.y += v.y * s; return this; }
     substract(v) { this.x -= v.x; this.y -= v.y; return this; }
     scale(s) { this.x *= s; this.y *= s; return this; }
-    dot(v) { return thhis.x * v.x + this.y * v.y; }
+    dot(v) { return this.x * v.x + this.y * v.y; }
     length() { return Math.hypot(this.x, this.y); }
     lengthSquared() { return this.x * this.x + this.y * this.y; }
     normalize() {

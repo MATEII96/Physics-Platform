@@ -26,7 +26,7 @@ export function renderQuiz(container, sim) {
 
         const q = document.createElement('p');
         q.className = 'quiz__question';
-        q.innerHTML = `<span class="quiz__num">${qi + 1}</span ${item.q}`;
+        q.innerHTML = `<span class="quiz__num">${qi + 1}</span> ${item.q}`;
         card.appendChild(q);
 
         const opts = document.createElement('div');

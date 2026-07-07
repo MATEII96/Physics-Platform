@@ -30,7 +30,7 @@ export class DoublePendulum extends Simulation {
         ];
     }
 
-    get pesets() {
+    get presets() {
         return {
             chaos: {
                 label: 'Edge of chaos',
@@ -85,7 +85,7 @@ export class DoublePendulum extends Simulation {
                 },
             ],
             equations: [
-                { label: 'Total energy', text: 'E = T + V = \\text{const}' },
+                { label: 'Total energy', tex: 'E = T + V = \\text{const}' },
             ],
         };
     }
@@ -112,7 +112,7 @@ export class DoublePendulum extends Simulation {
                     'oscillate with the driving frequency',
                 ],
                 answer: 2,
-                expalin: 'With no dissipation and no driving, energy E = T + V is a conserved quantity. Visible drift on the plot would indicate integrator error.',
+                explain: 'With no dissipation and no driving, energy E = T + V is a conserved quantity. Visible drift on the plot would indicate integrator error.',
             },
             {
                 q: 'What makes the equations of motion nonlinear?',
@@ -148,7 +148,7 @@ export class DoublePendulum extends Simulation {
                 type: 'phase',
                 xLabel: 'θ₂',
                 yLabel: 'ω₂',
-                series: [{ xKey: 'theta2', yKey: 'omega2', name:'θ₂–ω₂', color: '#5ee5ce6' }],
+                series: [{ xKey: 'theta2', yKey: 'omega2', name:'θ₂–ω₂', color: '#5ee5ce' }],
             },
             {
                 id: 'energy',
@@ -176,7 +176,6 @@ export class DoublePendulum extends Simulation {
     _derivatives(s) {
         const { L1, L2, m1, m2, g } = this.params;
         const [th1, w1, th2, w2] = s;
-        const d = th1 - th2;
         const d = th1 - th2;
         const sinD = Math.sin(d);
         const cosD = Math.cos(d);
@@ -214,7 +213,7 @@ export class DoublePendulum extends Simulation {
     }
 
     _rk4(s, h) {
-        const add = (a, b, f) => a.map((v, i) => b[i] * f);
+        const add = (a, b, f) => a.map((v, i) => v + b[i] * f);
         const k1 = this._derivatives(s);
         const k2 = this._derivatives(add(s, k1, h / 2));
         const k3 = this._derivatives(add(s, k2, h / 2));
@@ -287,7 +286,7 @@ export class DoublePendulum extends Simulation {
         ctx.shadowBlur = 0;
     }
 
-    simple() {
+    sample() {
         const [th1, w1, th2, w2] = this.state;
         return {
             t: this.t,

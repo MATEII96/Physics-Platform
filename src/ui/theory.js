@@ -17,7 +17,7 @@ export function renderTheory(container, sim) {
 
     parts.push(`<div class="theory__lead">
         <span class="tag tag--domain">${meta.domain}</span>
-        <span class="tag tag--level">${meta.difficulty}</span
+        <span class="tag tag--level">${meta.difficulty}</span>
     </div>`);
 
     if (theory.objectives && theory.objectives.length) {
@@ -27,7 +27,7 @@ export function renderTheory(container, sim) {
         parts.push('</ul>');
     }
 
-    for (const o of theory.sections || []) {
+    for (const section of theory.sections || []) {
         parts.push(`<h3 class="theory__h">${section.title}</h3>`);
         parts.push(`<p class="theory__body">${section.html}</p>`);
     }

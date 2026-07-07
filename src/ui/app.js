@@ -16,7 +16,7 @@ export class App {
         this.sim = null;
         this.history = [];
         this.plots = [];
-        this.controlHandle= null;
+        this.controlsHandle = null;
 
         this.running = true;
         this.fps = 60;
@@ -127,7 +127,7 @@ export class App {
     _buildPresets() {
         const presets = this.sim.presets;
         const keys = Object.keys(presets);
-        this.dom.preset.innerHTML = '<option value="">Presets…</options>';
+        this.dom.preset.innerHTML = '<option value="">Presets…</option>';
         for (const key of keys) {
             const o = document.createElement('option');
             o.value = key;
